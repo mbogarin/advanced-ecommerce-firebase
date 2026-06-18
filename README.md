@@ -1,73 +1,75 @@
-# React + TypeScript + Vite
+# Advanced React E-Commerce Web Application
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+---
 
-Currently, two official plugins are available:
+## Project Overview
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+This project is a frontend e-commerce application built using React, TypeScript, Redux Toolkit, and React Query. It uses the FakeStore API to simulate a real online shopping experience.
 
-## React Compiler
+Users can browse products, filter by category, manage a shopping cart, and simulate checkout functionality.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Table of Contents
 
-## Expanding the ESLint configuration
+- [Project Overview](#project-overview)
+- [Features](#features)
+- [Technologies Used](#technologies-used)
+- [Installation & Setup](#installation--setup)
+- [Project Structure](#project-structure)
+- [How It Works](#how-it-works)
+- [Future Improvements](#future-improvements)
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## Features
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+- Product listing using React Query
+- Dynamic category filtering from API
+- Product details display (title, price, category, description, rating, image)
+- Add to cart functionality using Redux Toolkit
+- Shopping cart with quantity management
+- Session storage persistence for cart state
+- Checkout simulation (clears cart)
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+## Technologies Used
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+- React
+- TypeScript
+- Redux Toolkit
+- React Query
+- React Router
+- FakeStore API
+
+## Installation & Setup
+
+```bash
+npm install
+npm run dev
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## Project Structure
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+src/
+├── api/
+├── components/
+├── pages/
+├── store/
+├── App.tsx
+├── main.tsx
 ```
+
+## How It Works
+
+- Products are fetched using React Query from FakeStore API
+- Cart state is managed using Redux Toolkit
+- Cart data is synced with sessionStorage for persistence
+- Users can add/remove items and simulate checkout
+
+## Future Improvements
+
+- Authentication system
+- Order history
+- Product search functionality
+- Backend integration
+
+## Notes
+
+This project is for educational purposes.

@@ -24,6 +24,7 @@ const cartSlice = createSlice({
 	name: "cart",
 	initialState,
 	reducers: {
+		// = Cart actions:
 		addToCart: (
 			state,
 			action: PayloadAction<Omit<CartItem, "quantity">>,

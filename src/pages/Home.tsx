@@ -34,13 +34,12 @@ export default function Home() {
 	if (isError) return <div>Failed to load products</div>;
 
 	return (
-		<div>
-			<h1>Products</h1>
-
-			{/* // -- style later */}
+		<div className="container py-4">
+			<h1 className="mb-4 fw-semibold">Products</h1>
 
 			{/* CATEGORY DROPDOWN: */}
 			<select
+				className="form-select w-auto mb-4"
 				value={selectedCategory}
 				onChange={(e) => setSelectedCategory(e.target.value)}
 			>
@@ -53,11 +52,15 @@ export default function Home() {
 				))}
 			</select>
 
-			{/* // ! style later */}
 			{/* PRODUCTS: */}
-			<div>
+			<div className="row g-3">
 				{products?.map((product: any) => (
-					<ProductCard key={product.id} product={product} />
+					<div
+						key={product.id}
+						className="col-12 col-sm-6 col-md-4 col-lg-3"
+					>
+						<ProductCard product={product} />
+					</div>
 				))}
 			</div>
 		</div>
