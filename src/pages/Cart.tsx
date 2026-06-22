@@ -30,7 +30,16 @@ export default function Cart() {
 			<h1 className="mb-4 fw-semibold">Shopping Cart</h1>
 
 			{/* Checkout Message: */}
-			{checkoutMessage && <p>{checkoutMessage}</p>}
+			{checkoutMessage && (
+				<div>
+					<h5
+						className="alert alert-success fw-semibold"
+						role="alert"
+					>
+						{checkoutMessage}
+					</h5>
+				</div>
+			)}
 
 			<div className="mb-4">
 				<h5>Total Products: {totalProducts}</h5>
