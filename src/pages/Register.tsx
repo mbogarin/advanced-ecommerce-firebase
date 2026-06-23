@@ -13,25 +13,33 @@ export default function Register() {
 	const handleRegister = async (e: React.FormEvent) => {
 		e.preventDefault();
 
-		console.log("email:", email);
-		console.log("password:", password);
+		try {
+			console.log("email:", email);
+			console.log("password:", password);
 
-		const userCredential = await createUserWithEmailAndPassword(
-			auth,
-			email,
-			password,
-		);
+			const userCredential = await createUserWithEmailAndPassword(
+				auth,
+				email,
+				password,
+			);
 
-		const user = userCredential.user;
+			const user = userCredential.user;
+			console.log("AUTH USER CREATED:", user.uid);
 
-		// Firestore user document:
-		await setDoc(doc(db, "users", user.uid), {
-			uid: user.uid,
-			email: user.email,
-			name: name,
-			createdAt: new Date(),
-		});
-		alert("User registered successfully");
+			// Firestore user document:
+			await setDoc(doc(db, "users", user.uid), {
+				uid: user.uid,
+				email: user.email,
+				name: name,
+				createdAt: new Date().toISOString(),
+			});
+
+			console.log("FIRESTORE USER CREATED");
+
+			alert("User registered successfully");
+		} catch (error) {
+			console.error("REGISTER ERROR:", error);
+		}
 	};
 
 	return (

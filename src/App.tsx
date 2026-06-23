@@ -156,7 +156,7 @@ export default function App() {
 							requireAuth={true}
 							redirectTo="/login"
 						>
-							<Profile />{" "}
+							<Profile user={user} />{" "}
 						</AuthGuard>
 					}
 				/>
