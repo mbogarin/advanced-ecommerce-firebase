@@ -12,6 +12,9 @@ export default function Register() {
 	const handleRegister = async (e: React.FormEvent) => {
 		e.preventDefault();
 
+		console.log("email:", email);
+		console.log("password:", password);
+
 		const userCredential = await createUserWithEmailAndPassword(
 			auth,
 			email,
@@ -41,6 +44,14 @@ export default function Register() {
 					placeholder="Email"
 					value={email}
 					onChange={(e) => setEmail(e.target.value)}
+				/>
+
+				<input
+					className="form-control mb-2"
+					type="password"
+					placeholder="Password"
+					value={password}
+					onChange={(e) => setPassword(e.target.value)}
 				/>
 
 				<button className="btn btn-primary w-100" type="submit">

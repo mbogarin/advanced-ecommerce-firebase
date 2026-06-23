@@ -10,6 +10,7 @@ import { auth } from "./firebase/firebaseConfig";
 import { useEffect, useState } from "react";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
+import AuthGuard from "./components/AuthGuard";
 
 export default function App() {
 	// Calculate NavBar cart items:
@@ -83,18 +84,52 @@ export default function App() {
 				</div>
 			</nav>
 
+			{/* ROUTES: */}
 			<Routes>
 				{/* Home page: */}
 				<Route path="/" element={<Home />} />
 
 				{/* Cart page: */}
-				<Route path="/cart" element={<Cart />} />
+				<Route
+					path="/cart"
+					element={
+						<AuthGuard
+							user={user}
+							requireAuth={true}
+							redirectTo="/login"
+						>
+							<Cart />
+						</AuthGuard>
+					}
+				/>
 
 				{/*//= Login: */}
-				<Route path="/login" element={<Login />} />
+				<Route
+					path="/login"
+					element={
+						<AuthGuard
+							user={user}
+							requireAuth={false}
+							redirectTo="/"
+						>
+							<Login />{" "}
+						</AuthGuard>
+					}
+				/>
 
 				{/*//= Register: */}
-				<Route path="/register" element={<Register />} />
+				<Route
+					path="/register"
+					element={
+						<AuthGuard
+							user={user}
+							requireAuth={false}
+							redirectTo="/"
+						>
+							<Register />{" "}
+						</AuthGuard>
+					}
+				/>
 			</Routes>
 		</div>
 	);
