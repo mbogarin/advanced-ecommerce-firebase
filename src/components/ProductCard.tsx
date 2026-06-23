@@ -28,7 +28,7 @@ export default function ProductCard({ product }: { product: Product }) {
 				// width={120}
 				onError={(e) => {
 					(e.target as HTMLImageElement).src =
-						"https://via.placeholder.com/120";
+						"https://placehold.co/120x120";
 				}}
 			/>
 			<div className="card-body d-flex flex-column">

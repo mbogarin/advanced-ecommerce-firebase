@@ -12,6 +12,7 @@ import { useEffect, useState } from "react";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Profile from "./pages/Profile";
+import AddProduct from "./pages/AddProduct";
 
 import AuthGuard from "./components/AuthGuard";
 
@@ -68,6 +69,10 @@ export default function App() {
 						Cart ({totalItems})
 					</Link>
 
+					<Link className="nav-link" to="/add-product">
+						Add Product
+					</Link>
+
 					{/*//= AUTH LINKS: */}
 
 					{user ? (
@@ -118,6 +123,8 @@ export default function App() {
 						</AuthGuard>
 					}
 				/>
+				{/*//= Add Product:  */}
+				<Route path="/add-product" element={<AddProduct />} />
 
 				{/*//= Login: */}
 				<Route
