@@ -2,32 +2,42 @@ import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import ProductCard from "../components/ProductCard";
 
-import {
-	fetchProducts,
-	fetchCategories,
-	fetchProductsByCategory,
-} from "../api/fakeStoreApi";
+// import {
+// 	fetchProducts,
+// 	fetchCategories,
+// 	fetchProductsByCategory,
+// } from "../api/fakeStoreApi";
 
+import { fetchProducts } from "../api/firestoreProductsApi";
 export default function Home() {
 	const [selectedCategory, setSelectedCategory] = useState("all");
 
 	// = Get categories:
-	const { data: categories } = useQuery({
-		queryKey: ["categories"],
-		queryFn: fetchCategories,
-	});
+	// const { data: categories } = useQuery({
+	// 	queryKey: ["categories"],
+	// 	queryFn: fetchCategories,
+	// });
 
 	// = Get products (ALL or by category):
+	// const {
+	// 	data: products,
+	// 	isLoading,
+	// 	isError,
+	// } = useQuery({
+	// 	queryKey: ["products", selectedCategory],
+	// 	queryFn: () =>
+	// 		selectedCategory === "all"
+	// 			? fetchProducts()
+	// 			: fetchProductsByCategory(selectedCategory),
+	// });
+
 	const {
 		data: products,
 		isLoading,
 		isError,
 	} = useQuery({
-		queryKey: ["products", selectedCategory],
-		queryFn: () =>
-			selectedCategory === "all"
-				? fetchProducts()
-				: fetchProductsByCategory(selectedCategory),
+		queryKey: ["products"],
+		queryFn: fetchProducts,
 	});
 
 	if (isLoading) return <div>Loading products...</div>;
@@ -38,7 +48,7 @@ export default function Home() {
 			<h1 className="mb-4 fw-semibold">Products</h1>
 
 			{/* CATEGORY DROPDOWN: */}
-			<select
+			{/* <select
 				className="form-select w-auto mb-4"
 				value={selectedCategory}
 				onChange={(e) => setSelectedCategory(e.target.value)}
@@ -50,7 +60,7 @@ export default function Home() {
 						{cat}
 					</option>
 				))}
-			</select>
+			</select> */}
 
 			{/* PRODUCTS: */}
 			<div className="row g-3">
