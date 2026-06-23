@@ -13,6 +13,7 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Profile from "./pages/Profile";
 import AddProduct from "./pages/AddProduct";
+import EditProduct from "./pages/editProduct";
 
 import AuthGuard from "./components/AuthGuard";
 
@@ -125,6 +126,9 @@ export default function App() {
 				/>
 				{/*//= Add Product:  */}
 				<Route path="/add-product" element={<AddProduct />} />
+
+				{/*//= Edit Product:  */}
+				<Route path="/edit-product/:id" element={<EditProduct />} />
 
 				{/*//= Login: */}
 				<Route

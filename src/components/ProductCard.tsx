@@ -1,8 +1,9 @@
 import { useDispatch } from "react-redux";
 import { addToCart } from "../store/cartSlice";
+import { Link } from "react-router-dom";
 
 type Product = {
-	id: number;
+	id: string;
 	title: string;
 	price: number;
 	category: string;
@@ -41,21 +42,30 @@ export default function ProductCard({ product }: { product: Product }) {
 				<p className="small text-truncate">{product.description}</p>
 
 				{/* // = Add to Cart Button: */}
-				<button
-					className="btn btn-primary mt-auto"
-					onClick={() =>
-						dispatch(
-							addToCart({
-								id: product.id,
-								title: product.title,
-								price: product.price,
-								image: product.image,
-							}),
-						)
-					}
-				>
-					Add to Cart
-				</button>
+				<div className="mt-auto">
+					<button
+						className="btn btn-primary w-100 mb-2"
+						onClick={() =>
+							dispatch(
+								addToCart({
+									id: product.id,
+									title: product.title,
+									price: product.price,
+									image: product.image,
+								}),
+							)
+						}
+					>
+						Add to Cart
+					</button>
+
+					<Link
+						to={`/edit-product/${product.id}`}
+						className="btn btn-outline-secondary w-100"
+					>
+						Edit Product
+					</Link>
+				</div>
 			</div>
 		</div>
 	);
