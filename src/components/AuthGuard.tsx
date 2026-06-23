@@ -1,5 +1,4 @@
 import type { ReactNode } from "react";
-import { Nav } from "react-bootstrap";
 import { Navigate } from "react-router-dom";
 
 type Props = {

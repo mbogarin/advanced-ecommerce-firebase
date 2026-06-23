@@ -8,26 +8,31 @@ import type { RootState } from "./store/store";
 import { onAuthStateChanged, signOut } from "firebase/auth";
 import { auth } from "./firebase/firebaseConfig";
 import { useEffect, useState } from "react";
+
 import Login from "./pages/Login";
 import Register from "./pages/Register";
+import Profile from "./pages/Profile";
+
 import AuthGuard from "./components/AuthGuard";
 
 export default function App() {
-	// Calculate NavBar cart items:
-	const cartItems = useSelector((state: RootState) => state.cart.items);
-	const totalItems = cartItems.reduce((sum, item) => sum + item.quantity, 0);
-
 	// = user state:
 	const [user, setUser] = useState(null);
+	const [loading, setLoading] = useState(true);
 
 	// = auth listener:
 	useEffect(() => {
 		const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
 			setUser(currentUser);
+			setLoading(false);
 		});
 
 		return () => unsubscribe();
 	}, []);
+
+	// Calculate NavBar cart items:
+	const cartItems = useSelector((state: RootState) => state.cart.items);
+	const totalItems = cartItems.reduce((sum, item) => sum + item.quantity, 0);
 
 	// = handle logout:
 	const handleLogout = async () => {
@@ -38,6 +43,10 @@ export default function App() {
 			console.error("Logout failed:", error);
 		}
 	};
+
+	if (loading) {
+		return <div className="container py-4">Loading...</div>;
+	}
 
 	return (
 		<div>
@@ -59,15 +68,22 @@ export default function App() {
 						Cart ({totalItems})
 					</Link>
 
-					{/*//= Auth: */}
+					{/*//= AUTH LINKS: */}
+
 					{user ? (
-						// > Logout button:
-						<button
-							className="btn btn-outline-danger btn-sm"
-							onClick={handleLogout}
-						>
-							Logout
-						</button>
+						// > Profile/Logout button:
+						<div>
+							<Link className="nav-link" to="/profile">
+								Profile
+							</Link>
+
+							<button
+								className="btn btn-outline-danger btn-sm"
+								onClick={handleLogout}
+							>
+								Logout
+							</button>
+						</div>
 					) : (
 						<div>
 							{/*//> Login button: */}
@@ -127,6 +143,20 @@ export default function App() {
 							redirectTo="/"
 						>
 							<Register />{" "}
+						</AuthGuard>
+					}
+				/>
+
+				{/*//= Profile: */}
+				<Route
+					path="/profile"
+					element={
+						<AuthGuard
+							user={user}
+							requireAuth={true}
+							redirectTo="/login"
+						>
+							<Profile />{" "}
 						</AuthGuard>
 					}
 				/>

@@ -8,6 +8,7 @@ export default function Register() {
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
 	const [error, setError] = useState("");
+	const [name, setName] = useState("");
 
 	const handleRegister = async (e: React.FormEvent) => {
 		e.preventDefault();
@@ -27,6 +28,7 @@ export default function Register() {
 		await setDoc(doc(db, "users", user.uid), {
 			uid: user.uid,
 			email: user.email,
+			name: name,
 			createdAt: new Date(),
 		});
 		alert("User registered successfully");
@@ -38,6 +40,14 @@ export default function Register() {
 
 			{/* Form: */}
 			<form onSubmit={handleRegister} className="w-50">
+				<input
+					className="form-control mb-2"
+					type="text"
+					placeholder="Name"
+					value={name}
+					onChange={(e) => setName(e.target.value)}
+				/>
+
 				<input
 					className="form-control mb-2"
 					type="email"
