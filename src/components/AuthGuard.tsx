@@ -1,8 +1,9 @@
 import type { ReactNode } from "react";
+import type { User } from "firebase/auth";
 import { Navigate } from "react-router-dom";
 
 type Props = {
-	user: any;
+	user: User | null;
 	children: ReactNode;
 	redirectTo: string;
 	requireAuth?: boolean;

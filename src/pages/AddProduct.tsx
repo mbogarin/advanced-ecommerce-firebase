@@ -36,7 +36,7 @@ export default function AddProduct() {
 
 	return (
 		<div className="container py-4">
-			<h1>Add Product</h1>
+			<h1 className="mb-4">Add Product</h1>
 
 			<form onSubmit={handleSubmit}>
 				<input
@@ -51,7 +51,7 @@ export default function AddProduct() {
 					type="number"
 					placeholder="Price"
 					value={price}
-					onChange={(e) => setPrice(e.target.value)}
+					onChange={(e) => setPrice(Number(e.target.value))}
 				/>
 
 				<textarea
@@ -68,7 +68,7 @@ export default function AddProduct() {
 					onChange={(e) => setImage(e.target.value)}
 				/>
 
-				<button className="btn btn-primary">Add Product</button>
+				<button className="btn btn-primary mt-2">Add Product</button>
 			</form>
 		</div>
 	);

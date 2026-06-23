@@ -22,10 +22,14 @@ export default function EditProduct() {
 	const [price, setPrice] = useState(0);
 
 	useEffect(() => {
-		if (product) {
+		if (!product) return;
+
+		const timeoutId = window.setTimeout(() => {
 			setTitle(product.title);
 			setPrice(Number(product.price));
-		}
+		}, 0);
+
+		return () => window.clearTimeout(timeoutId);
 	}, [product]);
 
 	if (isLoading)
@@ -50,7 +54,7 @@ export default function EditProduct() {
 
 	return (
 		<div className="container py-4">
-			<h1>Edit Product</h1>
+			<h1 className="mb-4">Edit Product</h1>
 
 			<div className="mb-3">
 				<label className="form-label">Title</label>

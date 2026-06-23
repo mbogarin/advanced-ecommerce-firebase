@@ -7,7 +7,7 @@ import { db } from "../firebase/firebaseConfig";
 export default function Register() {
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
-	const [error, setError] = useState("");
+	const [error] = useState("");
 	const [name, setName] = useState("");
 
 	const handleRegister = async (e: React.FormEvent) => {

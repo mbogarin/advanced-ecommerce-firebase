@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { useState } from "react";
+// import { useState } from "react";
 import ProductCard from "../components/ProductCard";
 
 // import {
@@ -8,9 +8,9 @@ import ProductCard from "../components/ProductCard";
 // 	fetchProductsByCategory,
 // } from "../api/fakeStoreApi";
 
-import { fetchProducts } from "../api/firestoreProductsApi";
+import { fetchProducts, type Product } from "../api/firestoreProductsApi";
 export default function Home() {
-	const [selectedCategory, setSelectedCategory] = useState("all");
+	// const [selectedCategory, setSelectedCategory] = useState("all");
 
 	// = Get categories:
 	// const { data: categories } = useQuery({
@@ -63,11 +63,11 @@ export default function Home() {
 			</select> */}
 
 			{/* PRODUCTS: */}
-			<div className="row g-3">
-				{products?.map((product: any) => (
+			<div className="row g-4">
+				{products?.map((product: Product) => (
 					<div
 						key={product.id}
-						className="col-12 col-sm-6 col-md-4 col-lg-3"
+						className="col-12 col-sm-7 col-md-5 col-lg-4"
 					>
 						<ProductCard product={product} />
 					</div>

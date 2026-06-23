@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { useParams } from "react-router-dom";
-import { fetchOrderById } from "../api/firestoreOrdersApi";
+import { fetchOrderById, type OrderItem } from "../api/firestoreOrdersApi";
 
 export default function OrderDetails() {
 	const { id } = useParams();
@@ -23,11 +23,17 @@ export default function OrderDetails() {
 		return <div className="container py-4">Order not found.</div>;
 	}
 
-	const date = order.createdAt?.toDate
-		? order.createdAt.toDate()
-		: order.createdAt
-			? new Date(order.createdAt)
-			: new Date();
+	const createdAt = order.createdAt;
+	const date =
+		createdAt instanceof Date
+			? createdAt
+			: typeof createdAt === "string"
+				? new Date(createdAt)
+				: createdAt &&
+					  typeof createdAt === "object" &&
+					  "toDate" in createdAt
+					? createdAt.toDate()
+					: new Date();
 
 	return (
 		<div className="container py-4">
@@ -47,9 +53,9 @@ export default function OrderDetails() {
 
 			<hr />
 
-			<h3>Products</h3>
+			<h3 className="mb-3 ms-1 mt-4">Products</h3>
 
-			{order.items?.map((item: any) => (
+			{order.items?.map((item: OrderItem) => (
 				<div key={item.id} className="card mb-3 p-3">
 					<h5>{item.title}</h5>
 

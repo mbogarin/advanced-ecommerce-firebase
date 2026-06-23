@@ -1,12 +1,17 @@
 import { useEffect, useState } from "react";
 import { auth, db } from "../firebase/firebaseConfig";
-import { doc, getDoc, updateDoc, deleteDoc } from "firebase/firestore";
-import { deleteUser } from "firebase/auth";
+import { doc, getDoc, deleteDoc } from "firebase/firestore";
+import { deleteUser, type User } from "firebase/auth";
 
-export default function Profile({ user }: { user: any }) {
+type ProfileUserData = {
+	email?: string | null;
+	name?: string;
+};
+
+export default function Profile({ user }: { user: User | null }) {
 	console.log("PROFILE RENDER user:", user);
 
-	const [userData, setUserData] = useState<any>(null);
+	const [userData, setUserData] = useState<ProfileUserData | null>(null);
 	const [name, setName] = useState("");
 	const [editMode, setEditMode] = useState(false);
 
@@ -35,11 +40,9 @@ export default function Profile({ user }: { user: any }) {
 	const handleUpdate = async () => {
 		if (!auth.currentUser) return;
 
-		const ref = doc(db, "users", auth.currentUser.uid);
-
-		setUserData((prev: any) => ({
-			...prev,
-			name: name,
+		setUserData((prev) => ({
+			...(prev ?? {}),
+			name,
 		}));
 
 		setEditMode(false);

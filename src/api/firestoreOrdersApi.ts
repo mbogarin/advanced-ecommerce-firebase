@@ -7,16 +7,25 @@ import {
 	query,
 	where,
 	Timestamp,
+	type Timestamp as FirestoreTimestamp,
 } from "firebase/firestore";
 import { db } from "../firebase/firebaseConfig";
 
-export type OrderItem = {
+export interface OrderItem {
 	id: string;
 	title: string;
 	price: number;
 	image: string;
 	quantity: number;
-};
+}
+
+export interface Order {
+	id: string;
+	userId: string;
+	items: OrderItem[];
+	total: number;
+	createdAt?: FirestoreTimestamp | Date | string | null;
+}
 
 // 1. reate order:
 export async function createOrder(
@@ -33,7 +42,7 @@ export async function createOrder(
 }
 
 // 2. Fetch orders:
-export async function fetchOrders(userId: string) {
+export async function fetchOrders(userId: string): Promise<Order[]> {
 	const ordersQuery = query(
 		collection(db, "orders"),
 		where("userId", "==", userId),
@@ -42,12 +51,12 @@ export async function fetchOrders(userId: string) {
 
 	return snapshot.docs.map((doc) => ({
 		id: doc.id,
-		...doc.data(),
+		...(doc.data() as Omit<Order, "id">),
 	}));
 }
 
 // 3. Fetch order by ID:
-export async function fetchOrderById(id: string) {
+export async function fetchOrderById(id: string): Promise<Order> {
 	const orderRef = doc(db, "orders", id);
 
 	const snapshot = await getDoc(orderRef);
@@ -58,6 +67,6 @@ export async function fetchOrderById(id: string) {
 
 	return {
 		id: snapshot.id,
-		...snapshot.data(),
+		...(snapshot.data() as Omit<Order, "id">),
 	};
 }

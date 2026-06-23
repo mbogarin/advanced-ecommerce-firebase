@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { auth } from "../firebase/firebaseConfig";
-import { fetchOrders } from "../api/firestoreOrdersApi";
+import { fetchOrders, type Order } from "../api/firestoreOrdersApi";
 import { Link } from "react-router-dom";
 
 export default function OrderHistory() {
@@ -30,7 +30,7 @@ export default function OrderHistory() {
 			{orders?.length === 0 ? (
 				<p>No orders found.</p>
 			) : (
-				orders?.map((order: any) => (
+				orders?.map((order: Order) => (
 					<Link
 						key={order.id}
 						to={`/orders/${order.id}`}
@@ -53,12 +53,31 @@ export default function OrderHistory() {
 							</p>
 
 							<p>
-								<strong>Date:</strong>{" "}
-								{order.createdAt?.toDate
-									? order.createdAt.toDate().toLocaleString()
-									: new Date(
-											order.createdAt,
-										).toLocaleString()}
+								<strong>Order Date:</strong>{" "}
+								{(() => {
+									const createdAt = order.createdAt;
+									if (createdAt instanceof Date) {
+										return createdAt.toLocaleString();
+									}
+
+									if (typeof createdAt === "string") {
+										return new Date(
+											createdAt,
+										).toLocaleString();
+									}
+
+									if (
+										createdAt &&
+										typeof createdAt === "object" &&
+										"toDate" in createdAt
+									) {
+										return createdAt
+											.toDate()
+											.toLocaleString();
+									}
+
+									return "Unknown date";
+								})()}
 							</p>
 
 							{/* View Details Row */}

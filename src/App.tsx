@@ -6,6 +6,7 @@ import type { RootState } from "./store/store";
 
 // = firebase imports:
 import { onAuthStateChanged, signOut } from "firebase/auth";
+import type { User } from "firebase/auth";
 import { auth } from "./firebase/firebaseConfig";
 import { useEffect, useState } from "react";
 
@@ -13,7 +14,7 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Profile from "./pages/Profile";
 import AddProduct from "./pages/AddProduct";
-import EditProduct from "./pages/editProduct";
+import EditProduct from "./pages/EditProduct";
 import OrderHistory from "./pages/OrderHistory";
 import OrderDetails from "./pages/OrderDetails";
 
@@ -21,8 +22,9 @@ import AuthGuard from "./components/AuthGuard";
 
 export default function App() {
 	// = user state:
-	const [user, setUser] = useState(null);
+	const [user, setUser] = useState<User | null>(null);
 	const [loading, setLoading] = useState(true);
+	const [open, setOpen] = useState(false);
 
 	// = auth listener:
 	useEffect(() => {
@@ -55,61 +57,87 @@ export default function App() {
 	return (
 		<div>
 			{/* Nav links */}
-			<nav className="navbar navbar-light bg-light px-3 border-bottom">
-				{/* Shop */}
-				<Link className="navbar-brand fw-semibold" to="/">
-					Shop
-				</Link>
-
-				<div className="d-flex gap-3 align-items-center">
-					{/* Home */}
-					<Link className="nav-link" to="/">
-						Home
+			<nav className="navbar navbar-expand-lg navbar-light bg-light px-3 border-bottom">
+				<div className="container-fluid">
+					{/* Shop */}
+					<Link className="navbar-brand fw-semibold" to="/">
+						Shop
 					</Link>
 
-					{/*//= ADDED LINKS: */}
-					<Link className="nav-link" to="/add-product">
-						Add Product
-					</Link>
-
-					<Link className="nav-link" to="/orders">
-						Order History
-					</Link>
-
-					{/* Cart */}
-					<Link className="nav-link" to="/cart">
-						Cart ({totalItems})
-					</Link>
-
-					{/*//= AUTH LINKS: */}
-
-					{user ? (
-						// > Profile/Logout button:
-						<div className="d-flex align-items-center gap-2 ms-auto">
-							<Link className="nav-link" to="/profile">
-								Profile
+					<div className="d-flex ms-auto align-items-center">
+						<div className="d-flex gap-3 align-items-center">
+							{/* Home */}
+							<Link className="nav-link" to="/">
+								Home
 							</Link>
 
-							<button
-								className="btn btn-outline-danger btn-sm"
-								onClick={handleLogout}
-							>
-								Logout
-							</button>
+							{/*//= ADDED LINKS: */}
+							<Link className="nav-link" to="/add-product">
+								Add Product
+							</Link>
+
+							<Link className="nav-link me-2" to="/orders">
+								Order History
+							</Link>
+
+							{/* Cart */}
+							<Link className="nav-link" to="/cart">
+								Cart ({totalItems})
+							</Link>
+
+							{/*//= AUTH LINKS: */}
+
+							{user ? (
+								// > Profile/Logout button:
+								<div className="position-relative">
+									<button
+										className="btn btn-outline-secondary"
+										onClick={() => setOpen(!open)}
+									>
+										Account
+									</button>
+
+									{open && (
+										<ul className="dropdown-menu show position-absolute end-0 mt-2">
+											<li>
+												<Link
+													className="dropdown-item"
+													to="/profile"
+												>
+													Profile
+												</Link>
+											</li>
+
+											<li>
+												<hr className="dropdown-divider" />{" "}
+											</li>
+
+											<li>
+												<button
+													className="dropdown-item text-danger"
+													onClick={handleLogout}
+												>
+													Logout
+												</button>
+											</li>
+										</ul>
+									)}
+								</div>
+							) : (
+								<div>
+									{/*//> Login button: */}
+									<Link className="nav-link" to="/login">
+										Login
+									</Link>
+
+									{/*//> Register button: */}
+									<Link className="nav-link" to="/register">
+										Register
+									</Link>
+								</div>
+							)}
 						</div>
-					) : (
-						<div>
-							{/*//> Login button: */}
-							<Link className="nav-link" to="/login">
-								Login
-							</Link>
-
-							{/*//> Register button: */}
-							<Link className="nav-link" to="/register">
-								Register
-							</Link>
-						</div>
-					)}
+					</div>
 				</div>
 			</nav>
 

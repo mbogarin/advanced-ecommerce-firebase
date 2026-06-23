@@ -3,7 +3,7 @@ import { useState } from "react";
 import type { RootState } from "../store/store";
 import { removeFromCart, clearCart } from "../store/cartSlice";
 import { auth } from "../firebase/firebaseConfig";
-import { createOrder } from "../api/firestoreOrdersApi";
+import { createOrder, type OrderItem } from "../api/firestoreOrdersApi";
 
 export default function Cart() {
 	const dispatch = useDispatch();
@@ -35,7 +35,15 @@ export default function Cart() {
 		}
 
 		try {
-			await createOrder(user.uid, cartItems, totalPrice);
+			const orderItems: OrderItem[] = cartItems.map((item) => ({
+				id: item.id,
+				title: item.title,
+				price: item.price,
+				image: item.image,
+				quantity: item.quantity,
+			}));
+
+			await createOrder(user.uid, orderItems, totalPrice);
 
 			dispatch(clearCart());
 			sessionStorage.removeItem("cart");

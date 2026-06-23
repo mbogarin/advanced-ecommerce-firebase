@@ -4,7 +4,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 
 export interface CartItem {
-	id: number;
+	id: string;
 	title: string;
 	price: number;
 	image: string;
@@ -40,7 +40,7 @@ const cartSlice = createSlice({
 			}
 		},
 
-		removeFromCart: (state, action: PayloadAction<number>) => {
+		removeFromCart: (state, action: PayloadAction<string>) => {
 			state.items = state.items.filter(
 				(item) => item.id !== action.payload,
 			);

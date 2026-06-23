@@ -2,22 +2,9 @@ import { useDispatch } from "react-redux";
 import { useQueryClient } from "@tanstack/react-query";
 import { addToCart } from "../store/cartSlice";
 import { Link } from "react-router-dom";
-import { deleteProduct } from "../api/firestoreProductsApi";
+import { deleteProduct, type Product } from "../api/firestoreProductsApi";
 
-type Product = {
-	id: string;
-	title: string;
-	price: number;
-	category: string;
-	description: string;
-	image: string;
-	rating?: {
-		rate: number;
-		count: number;
-	};
-};
-
-// = Reusable ProductCard Component:
+// ProductCard Component:
 export default function ProductCard({ product }: { product: Product }) {
 	const dispatch = useDispatch();
 	const queryClient = useQueryClient();
@@ -53,13 +40,13 @@ export default function ProductCard({ product }: { product: Product }) {
 				{/* // = Add to Cart Button: */}
 				<div className="mt-auto">
 					<button
-						className="btn btn-primary w-100 mb-2"
+						className="btn btn-sm btn-primary w-100 mb-2"
 						onClick={() =>
 							dispatch(
 								addToCart({
 									id: product.id,
 									title: product.title,
-									price: product.price,
+									price: Number(product.price),
 									image: product.image,
 								}),
 							)
@@ -70,13 +57,13 @@ export default function ProductCard({ product }: { product: Product }) {
 
 					<Link
 						to={`/edit-product/${product.id}`}
-						className="btn btn-outline-secondary w-100"
+						className="btn btn-sm btn-outline-secondary w-100"
 					>
 						Edit Product
 					</Link>
 
 					<button
-						className="btn btn-danger w-100 mt-2"
+						className="btn btn-sm btn-danger w-100 mt-2"
 						onClick={handleDelete}
 					>
 						Delete Product
