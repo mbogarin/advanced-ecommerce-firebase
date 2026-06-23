@@ -2,6 +2,8 @@ import { useSelector, useDispatch } from "react-redux";
 import { useState } from "react";
 import type { RootState } from "../store/store";
 import { removeFromCart, clearCart } from "../store/cartSlice";
+import { auth } from "../firebase/firebaseConfig";
+import { createOrder } from "../api/firestoreOrdersApi";
 
 export default function Cart() {
 	const dispatch = useDispatch();
@@ -19,10 +21,31 @@ export default function Cart() {
 	);
 
 	// = Checkout:
-	const handleCheckout = () => {
-		dispatch(clearCart());
-		sessionStorage.removeItem("cart");
-		setCheckoutMessage("Checkout successful! You cart has been cleared.");
+	// const handleCheckout = () => {
+	// 	dispatch(clearCart());
+	// 	sessionStorage.removeItem("cart");
+	// 	setCheckoutMessage("Checkout successful! You cart has been cleared.");
+	// };
+	const handleCheckout = async () => {
+		const user = auth.currentUser;
+
+		if (!user) {
+			alert("Please log in before checking out.");
+			return;
+		}
+
+		try {
+			await createOrder(user.uid, cartItems, totalPrice);
+
+			dispatch(clearCart());
+			sessionStorage.removeItem("cart");
+			setCheckoutMessage(
+				"Checkout successful! Your cart has been cleared.",
+			);
+		} catch (error) {
+			console.error("Checkout failed:", error);
+			alert("There was a problem completing your order.");
+		}
 	};
 
 	return (
@@ -66,7 +89,7 @@ export default function Cart() {
 									// width={100}
 									onError={(e) => {
 										(e.target as HTMLImageElement).src =
-											"https://via.placeholder.com/100";
+											"https://placehold.co/100x100";
 									}}
 								/>
 							</div>

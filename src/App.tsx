@@ -14,6 +14,8 @@ import Register from "./pages/Register";
 import Profile from "./pages/Profile";
 import AddProduct from "./pages/AddProduct";
 import EditProduct from "./pages/editProduct";
+import OrderHistory from "./pages/OrderHistory";
+import OrderDetails from "./pages/OrderDetails";
 
 import AuthGuard from "./components/AuthGuard";
 
@@ -65,20 +67,25 @@ export default function App() {
 						Home
 					</Link>
 
+					{/*//= ADDED LINKS: */}
+					<Link className="nav-link" to="/add-product">
+						Add Product
+					</Link>
+
+					<Link className="nav-link" to="/orders">
+						Order History
+					</Link>
+
 					{/* Cart */}
 					<Link className="nav-link" to="/cart">
 						Cart ({totalItems})
-					</Link>
-
-					<Link className="nav-link" to="/add-product">
-						Add Product
 					</Link>
 
 					{/*//= AUTH LINKS: */}
 
 					{user ? (
 						// > Profile/Logout button:
-						<div>
+						<div className="d-flex align-items-center gap-2 ms-auto">
 							<Link className="nav-link" to="/profile">
 								Profile
 							</Link>
@@ -129,6 +136,12 @@ export default function App() {
 
 				{/*//= Edit Product:  */}
 				<Route path="/edit-product/:id" element={<EditProduct />} />
+
+				{/*//= Order History:  */}
+				<Route path="/orders" element={<OrderHistory />} />
+
+				{/*//= Order Details:  */}
+				<Route path="/orders/:id" element={<OrderDetails />} />
 
 				{/*//= Login: */}
 				<Route

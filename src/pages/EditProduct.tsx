@@ -28,10 +28,11 @@ export default function EditProduct() {
 		}
 	}, [product]);
 
-	if (isLoading) return <div>Loading product...</div>;
+	if (isLoading)
+		return <div className="container py-4">Loading product...</div>;
 
 	if (isError || !product) {
-		return <div>Product not found.</div>;
+		return <div className="container py-4">Product not found.</div>;
 	}
 
 	const handleSave = async () => {
