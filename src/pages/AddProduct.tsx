@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { addDoc, collection } from "firebase/firestore";
 import { db } from "../firebase/firebaseConfig";
 
@@ -8,14 +9,20 @@ export default function AddProduct() {
 	const [description, setDescription] = useState("");
 	const [image, setImage] = useState("");
 
+	const navigate = useNavigate();
+
+	const DEFAULT_IMAGE = "https://placehold.co/150x150";
+
 	const handleSubmit = async (e: React.FormEvent) => {
 		e.preventDefault();
+
+		const imageToUse = image.trim() === "" ? DEFAULT_IMAGE : image.trim();
 
 		await addDoc(collection(db, "products"), {
 			title,
 			price: Number(price),
 			description,
-			image,
+			image: imageToUse,
 			category: "custom",
 			rating: {
 				rate: 0,
@@ -24,6 +31,7 @@ export default function AddProduct() {
 		});
 
 		alert("Product added!");
+		navigate("/");
 	};
 
 	return (

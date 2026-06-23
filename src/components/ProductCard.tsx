@@ -1,6 +1,8 @@
 import { useDispatch } from "react-redux";
+import { useQueryClient } from "@tanstack/react-query";
 import { addToCart } from "../store/cartSlice";
 import { Link } from "react-router-dom";
+import { deleteProduct } from "../api/firestoreProductsApi";
 
 type Product = {
 	id: string;
@@ -18,6 +20,13 @@ type Product = {
 // = Reusable ProductCard Component:
 export default function ProductCard({ product }: { product: Product }) {
 	const dispatch = useDispatch();
+	const queryClient = useQueryClient();
+
+	const handleDelete = async () => {
+		await deleteProduct(product.id);
+
+		queryClient.invalidateQueries({ queryKey: ["products"] });
+	};
 
 	return (
 		<div className="card h-100">
@@ -29,7 +38,7 @@ export default function ProductCard({ product }: { product: Product }) {
 				// width={120}
 				onError={(e) => {
 					(e.target as HTMLImageElement).src =
-						"https://placehold.co/120x120";
+						"https://placehold.co/150x150";
 				}}
 			/>
 			<div className="card-body d-flex flex-column">
@@ -65,6 +74,13 @@ export default function ProductCard({ product }: { product: Product }) {
 					>
 						Edit Product
 					</Link>
+
+					<button
+						className="btn btn-danger w-100 mt-2"
+						onClick={handleDelete}
+					>
+						Delete Product
+					</button>
 				</div>
 			</div>
 		</div>
