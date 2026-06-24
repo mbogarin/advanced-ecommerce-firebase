@@ -17,15 +17,26 @@ export default function OrderHistory() {
 	});
 
 	if (isLoading)
-		return <div className="container py-4">Loading orders...</div>;
+		return (
+			<div className="container py-4" style={{ maxWidth: "850px" }}>
+				Loading orders...
+			</div>
+		);
 
 	if (isError) {
-		return <div className="container py-4">Error loading orders.</div>;
+		return (
+			<div className="container py-4" style={{ maxWidth: "850px" }}>
+				Error loading orders.
+			</div>
+		);
 	}
 
 	return (
-		<div className="container py-4">
-			<h1 className="mb-4">Order History</h1>
+		<div className="container py-4" style={{ maxWidth: "850px" }}>
+			<h1 className="mb-2">Order History</h1>
+			<p className="text-muted mb-4">
+				View your previous purchases and order details.
+			</p>
 
 			{orders?.length === 0 ? (
 				<p>No orders found.</p>
@@ -41,18 +52,20 @@ export default function OrderHistory() {
 							marginBottom: "12px",
 						}}
 					>
-						<div className="card mb-4 p-3  shadow-sm">
-							<h5 className="mb-4">
-								Order ID:
-								<span className="lead"> {order.id}</span>
+						<div className="card mb-4 p-4 shadow-sm">
+							<h5 className="fw-semibold mb-4">
+								Order ID:{" "}
+								<span className="text-primary text-decoration-underline">
+									{order.id}
+								</span>
 							</h5>
 
-							<p className="mb-3">
+							<p className="mb-2 fs-5 text-success ">
 								<strong>Total:</strong> $
 								{order.total.toFixed(2)}
 							</p>
 
-							<p>
+							<p className="text-muted mb-0">
 								<strong>Order Date:</strong>{" "}
 								{(() => {
 									const createdAt = order.createdAt;
@@ -81,11 +94,8 @@ export default function OrderHistory() {
 							</p>
 
 							{/* View Details Row */}
-							<div className="d-flex justify-content-end mt-1">
-								<span
-									className="text-primary fw-semibold text-decoration-none"
-									style={{ cursor: "pointer" }}
-								>
+							<div className="d-flex justify-content-end mt-0">
+								<span className="btn btn-outline-primary btn-sm">
 									View Details
 								</span>
 							</div>

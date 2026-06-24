@@ -1,4 +1,5 @@
 import { useSelector, useDispatch } from "react-redux";
+import { Link } from "react-router-dom";
 import { useState } from "react";
 import type { RootState } from "../store/store";
 import { removeFromCart, clearCart } from "../store/cartSlice";
@@ -62,13 +63,11 @@ export default function Cart() {
 
 			{/* Checkout Message: */}
 			{checkoutMessage && (
-				<div>
-					<h5
-						className="alert alert-success fw-semibold"
-						role="alert"
-					>
-						{checkoutMessage}
-					</h5>
+				<div
+					className="alert alert-success fw-semibold text-center mt-3"
+					role="alert"
+				>
+					{checkoutMessage}
 				</div>
 			)}
 
@@ -79,17 +78,25 @@ export default function Cart() {
 
 			{/* // = CART ITEMS */}
 			{cartItems.length === 0 ? (
-				<p>Your cart is empty.</p>
+				<div className="text-center py-5">
+					<h5 className="mb-3">Your cart is empty 🛒</h5>
+					<p className="text-muted mb-3">
+						Looks like you haven’t added anything yet.
+					</p>
+					<Link to="/" className="btn btn-primary">
+						Go Shopping
+					</Link>
+				</div>
 			) : (
 				cartItems.map((item) => (
-					<div key={item.id} className="card mb-3 shadow-md">
+					<div key={item.id} className="card mb-3 shadow-sm">
 						<div className="row g-0 align-items-center p-3">
 							{/* Image: */}
 							<div className="col-3">
 								<img
 									src={item.image}
 									alt={item.title}
-									className="img-fluid p-1"
+									className="img-fluid p-2 rounded border bg-light"
 									style={{
 										height: "80px",
 										objectFit: "contain",
@@ -104,10 +111,10 @@ export default function Cart() {
 
 							{/* Text: */}
 							<div className="col-6">
-								<h5 className="fw-semibold mb-2">
+								<h5 className="fw-semibold mb-1">
 									{item.title}
 								</h5>
-								<h6 className="mb-0">
+								<h6 className="mb-1 text-success fw-semibold">
 									Price: ${item.price.toFixed(2)}
 								</h6>
 								<p className="mb-0">
@@ -132,9 +139,9 @@ export default function Cart() {
 			)}
 			{/* Checkout button: */}
 			{cartItems.length > 0 && (
-				<div className="text-end mt-3">
+				<div className="text-end mt-4">
 					<button
-						className="btn btn-success"
+						className="btn btn-success px-4 fw-semibold"
 						onClick={handleCheckout}
 					>
 						Checkout

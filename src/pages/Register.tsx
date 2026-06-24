@@ -43,41 +43,51 @@ export default function Register() {
 	};
 
 	return (
-		<div className="container py-4">
-			<h1 className="mb-4">Register</h1>
+		<div
+			className="container d-flex justify-content-center align-items-center"
+			style={{ minHeight: "80vh" }}
+		>
+			<div
+				className="card shadow-lg border-0 p-4"
+				style={{ maxWidth: "500px", width: "100%" }}
+			>
+				<h1 className="text-center mb-2">Create Account</h1>
+				<p className="text-muted text-center mb-5">
+					Sign up to start shopping and manage your orders.
+				</p>
 
-			{/* Form: */}
-			<form onSubmit={handleRegister} className="w-50">
-				<input
-					className="form-control mb-2"
-					type="text"
-					placeholder="Name"
-					value={name}
-					onChange={(e) => setName(e.target.value)}
-				/>
+				<form onSubmit={handleRegister}>
+					<input
+						className="form-control mb-3"
+						type="text"
+						placeholder="Name"
+						value={name}
+						onChange={(e) => setName(e.target.value)}
+					/>
 
-				<input
-					className="form-control mb-2"
-					type="email"
-					placeholder="Email"
-					value={email}
-					onChange={(e) => setEmail(e.target.value)}
-				/>
+					<input
+						className="form-control mb-3"
+						type="email"
+						placeholder="Email"
+						value={email}
+						onChange={(e) => setEmail(e.target.value)}
+					/>
 
-				<input
-					className="form-control mb-2"
-					type="password"
-					placeholder="Password"
-					value={password}
-					onChange={(e) => setPassword(e.target.value)}
-				/>
+					<input
+						className="form-control mb-3"
+						type="password"
+						placeholder="Password"
+						value={password}
+						onChange={(e) => setPassword(e.target.value)}
+					/>
 
-				<button className="btn btn-primary w-100" type="submit">
-					Register
-				</button>
+					<button className="btn btn-primary w-100" type="submit">
+						Register
+					</button>
 
-				{error && <p className="text-danger mt-2">{error}</p>}
-			</form>
+					{error && <p className="text-danger mt-2">{error}</p>}
+				</form>
+			</div>
 		</div>
 	);
 }

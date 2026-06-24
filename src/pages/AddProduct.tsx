@@ -5,9 +5,16 @@ import { db } from "../firebase/firebaseConfig";
 
 export default function AddProduct() {
 	const [title, setTitle] = useState("");
-	const [price, setPrice] = useState(0);
+	const [price, setPrice] = useState("");
 	const [description, setDescription] = useState("");
 	const [image, setImage] = useState("");
+	const [category, setCategory] = useState("");
+
+	const [rating, setRating] = useState("");
+	const [alert, setAlert] = useState<{
+		type: "success" | "danger";
+		message: string;
+	} | null>(null);
 
 	const navigate = useNavigate();
 
@@ -23,52 +30,111 @@ export default function AddProduct() {
 			price: Number(price),
 			description,
 			image: imageToUse,
-			category: "custom",
+			category,
 			rating: {
-				rate: 0,
+				rate: parseFloat(rating),
 				count: 0,
 			},
 		});
 
-		alert("Product added!");
-		navigate("/");
+		setAlert({
+			type: "success",
+			message: "Product added successfully!",
+		});
+
+		setTimeout(() => {
+			navigate("/");
+		}, 1200);
 	};
 
 	return (
 		<div className="container py-4">
 			<h1 className="mb-4">Add Product</h1>
 
+			{alert && (
+				<div className={`alert alert-${alert.type} text-center`}>
+					{alert.message}
+				</div>
+			)}
+
 			<form onSubmit={handleSubmit}>
-				<input
-					className="form-control mb-2"
-					placeholder="Title"
-					value={title}
-					onChange={(e) => setTitle(e.target.value)}
-				/>
+				<div className="mb-3">
+					<input
+						className="form-control"
+						placeholder="Title"
+						value={title}
+						onChange={(e) => setTitle(e.target.value)}
+						required
+					/>
+				</div>
 
-				<input
-					className="form-control mb-2"
-					type="number"
-					placeholder="Price"
-					value={price}
-					onChange={(e) => setPrice(Number(e.target.value))}
-				/>
+				<div className="mb-3">
+					<div className="input-group">
+						<span className="input-group-text">$</span>
+						<input
+							className="form-control"
+							type="number"
+							placeholder="Price"
+							value={price}
+							onChange={(e) => setPrice(e.target.value)}
+							required
+						/>
+					</div>
+				</div>
 
-				<textarea
-					className="form-control mb-2"
-					placeholder="Description"
-					value={description}
-					onChange={(e) => setDescription(e.target.value)}
-				/>
+				<div className="mb-3">
+					<textarea
+						className="form-control"
+						placeholder="Description"
+						value={description}
+						onChange={(e) => setDescription(e.target.value)}
+					/>
+				</div>
 
-				<input
-					className="form-control mb-2"
-					placeholder="Image URL"
-					value={image}
-					onChange={(e) => setImage(e.target.value)}
-				/>
+				<div className="mb-3">
+					<input
+						className="form-control"
+						placeholder="Image URL"
+						value={image}
+						onChange={(e) => setImage(e.target.value)}
+					/>
+				</div>
 
-				<button className="btn btn-primary mt-2">Add Product</button>
+				<div className="mb-3">
+					<select
+						className="form-control"
+						value={category}
+						onChange={(e) => setCategory(e.target.value)}
+						required
+					>
+						<option value="">Select Category</option>
+						<option value="men's clothing">Men's Clothing</option>
+						<option value="women's clothing">
+							Women's Clothing
+						</option>
+						<option value="electronics">Electronics</option>
+						<option value="jewelry">Jewelry</option>
+						<option value="home">Home</option>
+						<option value="beauty">Beauty</option>
+						<option value="sports">Sports</option>
+						<option value="toys">Toys</option>
+					</select>
+				</div>
+
+				<div className="mb-3">
+					<input
+						className="form-control"
+						type="number"
+						step="0.1"
+						min="0"
+						max="5"
+						placeholder="Rating (0-5)"
+						value={rating}
+						onChange={(e) => setRating(e.target.value)}
+					/>
+				</div>
+
+				<button className="btn btn-primary px-4">Add Product</button>
 			</form>
 		</div>
 	);

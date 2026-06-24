@@ -19,33 +19,39 @@ export default function Login() {
 	};
 
 	return (
-		<div className="container py-4">
-			<h1 className="mb-4">Login</h1>
-
-			{/* Form: */}
-			<form onSubmit={handleLogin} className="w-50">
-				<input
-					className="form-control mb-2"
-					type="email"
-					placeholder="Email"
-					value={email}
-					onChange={(e) => setEmail(e.target.value)}
-				/>
-
-				<input
-					className="form-control mb-2"
-					type="password"
-					placeholder="Password"
-					value={password}
-					onChange={(e) => setPassword(e.target.value)}
-				/>
-
-				<button className="btn btn-primary w-100" type="submit">
-					Login
-				</button>
-
-				{error && <p className="text-danger mt-2">{error}</p>}
-			</form>
+		<div
+			className="container d-flex justify-content-center align-items-center"
+			style={{ minHeight: "80vh" }}
+		>
+			<div
+				className="card shadow-lg border-0 p-5 d-flex justify-content-center"
+				style={{ maxWidth: "500px", width: "100%", minHeight: "450px" }}
+			>
+				<h1 className="text-center mb-2">Welcome Back</h1>
+				<p className="text-muted text-center mb-5">
+					Sign in to manage your products and orders.
+				</p>
+				<form onSubmit={handleLogin}>
+					<input
+						className="form-control mb-3"
+						type="email"
+						placeholder="Email"
+						value={email}
+						onChange={(e) => setEmail(e.target.value)}
+					/>
+					<input
+						className="form-control mb-3"
+						type="password"
+						placeholder="Password"
+						value={password}
+						onChange={(e) => setPassword(e.target.value)}
+					/>
+					<button className="btn btn-primary w-100" type="submit">
+						Login
+					</button>
+					{error && <p className="text-danger mt-2">{error}</p>}
+				</form>
+			</div>
 		</div>
 	);
 }

@@ -124,15 +124,19 @@ export default function App() {
 									)}
 								</div>
 							) : (
-								<div>
-									{/*//> Login button: */}
-									<Link className="nav-link" to="/login">
-										Login
+								<div className="d-flex gap-2 align-items-center">
+									<Link
+										className="btn btn-outline-primary btn-sm"
+										to="/login"
+									>
+										Sign in
 									</Link>
 
-									{/*//> Register button: */}
-									<Link className="nav-link" to="/register">
-										Register
+									<Link
+										className="btn btn-primary btn-sm"
+										to="/register"
+									>
+										Get started
 									</Link>
 								</div>
 							)}

@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-// import { useState } from "react";
+import { useState } from "react";
 import ProductCard from "../components/ProductCard";
 
 // import {
@@ -10,6 +10,11 @@ import ProductCard from "../components/ProductCard";
 
 import { fetchProducts, type Product } from "../api/firestoreProductsApi";
 export default function Home() {
+	const [alert, setAlert] = useState<{
+		type: "success" | "danger";
+		message: string;
+	} | null>(null);
+
 	// const [selectedCategory, setSelectedCategory] = useState("all");
 
 	// = Get categories:
@@ -47,6 +52,15 @@ export default function Home() {
 		<div className="container py-4">
 			<h1 className="mb-4 fw-semibold">Products</h1>
 
+			{alert && (
+				<div
+					className={`alert alert-${alert.type} py-1 mb-2`}
+					role="alert"
+				>
+					{alert.message}
+				</div>
+			)}
+
 			{/* CATEGORY DROPDOWN: */}
 			{/* <select
 				className="form-select w-auto mb-4"
@@ -67,9 +81,9 @@ export default function Home() {
 				{products?.map((product: Product) => (
 					<div
 						key={product.id}
-						className="col-12 col-sm-7 col-md-5 col-lg-4"
+						className="col-12 col-sm-6 col-md-5 col-lg-4"
 					>
-						<ProductCard product={product} />
+						<ProductCard product={product} setAlert={setAlert} />
 					</div>
 				))}
 			</div>
