@@ -13,8 +13,12 @@ export default function Login() {
 		try {
 			await signInWithEmailAndPassword(auth, email, password);
 			alert("Login successful");
-		} catch (err: any) {
-			setError(err.message);
+		} catch (err: unknown) {
+			if (err instanceof Error) {
+				setError(err.message);
+			} else {
+				setError("Login failed");
+			}
 		}
 	};
 

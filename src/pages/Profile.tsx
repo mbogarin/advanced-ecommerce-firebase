@@ -62,13 +62,11 @@ export default function Profile({ user }: { user: User | null }) {
 
 			setSuccess("Profile updated successfully");
 			setEditMode(false);
-		} catch (error: any) {
+		} catch (error: unknown) {
 			console.error("Update failed:", error);
 
-			if (error?.code === "not-found") {
-				setError(
-					"Profile record not found. Please log out and log back in to reset your profile.",
-				);
+			if (error instanceof Error && error.message) {
+				setError(error.message);
 			} else {
 				setError("Failed to update profile. Please try again.");
 			}
