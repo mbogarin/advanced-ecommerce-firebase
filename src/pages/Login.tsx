@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../firebase/firebaseConfig";
 
@@ -6,18 +7,22 @@ export default function Login() {
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
 	const [error, setError] = useState("");
+	const navigate = useNavigate();
 
+	// Handle login:
 	const handleLogin = async (e: React.FormEvent) => {
 		e.preventDefault();
 
+		// Error handling:
 		try {
 			await signInWithEmailAndPassword(auth, email, password);
-			alert("Login successful");
+			// alert("Login successful");
+			navigate("/");
 		} catch (err: unknown) {
 			if (err instanceof Error) {
 				setError(err.message);
 			} else {
-				setError("Login failed");
+				setError("Login failed. Please try again.");
 			}
 		}
 	};
@@ -53,7 +58,13 @@ export default function Login() {
 					<button className="btn btn-primary w-100" type="submit">
 						Login
 					</button>
-					{error && <p className="text-danger mt-2">{error}</p>}
+
+					{/* Error message: */}
+					{error && (
+						<div className="alert alert-danger py-2 mt-3 text-center">
+							{error}
+						</div>
+					)}
 				</form>
 			</div>
 		</div>

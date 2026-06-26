@@ -21,12 +21,12 @@ import OrderDetails from "./pages/OrderDetails";
 import AuthGuard from "./components/AuthGuard";
 
 export default function App() {
-	// = user state:
+	// state:
 	const [user, setUser] = useState<User | null>(null);
 	const [loading, setLoading] = useState(true);
 	const [open, setOpen] = useState(false);
 
-	// = auth listener:
+	// auth listener:
 	useEffect(() => {
 		const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
 			setUser(currentUser);
@@ -40,7 +40,7 @@ export default function App() {
 	const cartItems = useSelector((state: RootState) => state.cart.items);
 	const totalItems = cartItems.reduce((sum, item) => sum + item.quantity, 0);
 
-	// = handle logout:
+	// handle logout:
 	const handleLogout = async () => {
 		try {
 			await signOut(auth);
@@ -66,29 +66,25 @@ export default function App() {
 
 					<div className="d-flex ms-auto align-items-center">
 						<div className="d-flex gap-3 align-items-center">
-							{/* Home */}
 							<Link className="nav-link" to="/">
 								Home
 							</Link>
 
-							{/*//= ADDED LINKS: */}
 							<Link className="nav-link" to="/add-product">
 								Add Product
 							</Link>
 
-							<Link className="nav-link me-2" to="/orders">
+							<Link className="nav-link" to="/orders">
 								Order History
 							</Link>
 
 							{/* Cart */}
-							<Link className="nav-link" to="/cart">
+							<Link className="nav-link me-2" to="/cart">
 								Cart ({totalItems})
 							</Link>
 
-							{/*//= AUTH LINKS: */}
-
+							{/* AUTH LINKS: */}
 							{user ? (
-								// > Profile/Logout button:
 								<div className="position-relative">
 									<button
 										className="btn btn-outline-secondary"
@@ -163,19 +159,59 @@ export default function App() {
 						</AuthGuard>
 					}
 				/>
-				{/*//= Add Product:  */}
-				<Route path="/add-product" element={<AddProduct />} />
 
-				{/*//= Edit Product:  */}
-				<Route path="/edit-product/:id" element={<EditProduct />} />
+				<Route
+					path="/add-product"
+					element={
+						<AuthGuard
+							user={user}
+							requireAuth={true}
+							redirectTo="/login"
+						>
+							<AddProduct />
+						</AuthGuard>
+					}
+				/>
 
-				{/*//= Order History:  */}
-				<Route path="/orders" element={<OrderHistory />} />
+				<Route
+					path="/edit-product/:id"
+					element={
+						<AuthGuard
+							user={user}
+							requireAuth={true}
+							redirectTo="/login"
+						>
+							<EditProduct />
+						</AuthGuard>
+					}
+				/>
 
-				{/*//= Order Details:  */}
-				<Route path="/orders/:id" element={<OrderDetails />} />
+				<Route
+					path="/orders"
+					element={
+						<AuthGuard
+							user={user}
+							requireAuth={true}
+							redirectTo="/login"
+						>
+							<OrderHistory />
+						</AuthGuard>
+					}
+				/>
 
-				{/*//= Login: */}
+				<Route
+					path="/orders/:id"
+					element={
+						<AuthGuard
+							user={user}
+							requireAuth={true}
+							redirectTo="/login"
+						>
+							<OrderDetails />
+						</AuthGuard>
+					}
+				/>
+
 				<Route
 					path="/login"
 					element={

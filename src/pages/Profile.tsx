@@ -1,46 +1,58 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { auth, db } from "../firebase/firebaseConfig";
 import { doc, getDoc, deleteDoc, setDoc } from "firebase/firestore";
 import { deleteUser, type User } from "firebase/auth";
 
+// type:
 type ProfileUserData = {
 	email?: string | null;
 	name?: string;
+	address?: string;
 };
 
 export default function Profile({ user }: { user: User | null }) {
-	console.log("PROFILE RENDER user:", user);
-
+	// States:
 	const [userData, setUserData] = useState<ProfileUserData | null>(null);
 	const [name, setName] = useState("");
+	const [address, setAddress] = useState("");
 	const [editMode, setEditMode] = useState(false);
 	const [error, setError] = useState("");
 	const [success, setSuccess] = useState("");
-
-	console.log("PROFILE userData:", userData);
+	const navigate = useNavigate();
 
 	useEffect(() => {
-		console.log("useEffect fired");
 		if (!user) return;
 
+		// Fetch user:
 		const fetchUser = async () => {
-			console.log("fetchUser running for:", user?.uid);
+			// console.log("fetchUser running for:", user?.uid);
 
 			const ref = doc(db, "users", user.uid);
 			const snap = await getDoc(ref);
 
 			if (snap.exists()) {
-				setUserData(snap.data());
-				setName(snap.data().name || "");
+				// Exisiting user load:
+				const data = snap.data() as ProfileUserData;
+
+				setUserData(data);
+				setName(data.name || "");
+				setAddress(data.address || "");
 			} else {
-				setUserData({
+				// New user creation:
+				const newUserData = {
 					email: user.email,
 					name: "",
-				});
+					address: "",
+				};
+
+				await setDoc(doc(db, "users", user.uid), newUserData);
+
+				setUserData(newUserData);
 				setName("");
+				setAddress("");
 			}
 		};
-
 		fetchUser();
 	}, [user]);
 
@@ -53,12 +65,16 @@ export default function Profile({ user }: { user: User | null }) {
 
 		try {
 			const ref = doc(db, "users", auth.currentUser.uid);
-			await setDoc(ref, { name }, { merge: true });
+			await setDoc(ref, { name, address }, { merge: true });
 
-			setUserData((prev) => ({
-				...(prev ?? {}),
-				name,
-			}));
+			setUserData((prev) => {
+				if (!prev) return { name, address, email: userData?.email };
+				return {
+					...prev,
+					name,
+					address,
+				};
+			});
 
 			setSuccess("Profile updated successfully");
 			setEditMode(false);
@@ -86,17 +102,15 @@ export default function Profile({ user }: { user: User | null }) {
 		) {
 			return;
 		}
-
 		try {
-			// 1. delete firestore user doc:
-			await deleteDoc(doc(db, "users", uid));
-
-			// 2. delete auth user:
 			await deleteUser(auth.currentUser);
-			alert("Account successfully deleted");
-			console.log("Account deleted");
-		} catch (error) {
-			console.error("Delete failed:", error);
+			await deleteDoc(doc(db, "users", uid));
+			// alert("Account successfully deleted");
+			await auth.signOut();
+			navigate("/login");
+		} catch (err) {
+			console.error(err);
+			alert("Account deletion failed. Please log in and try again.");
 		}
 	};
 
@@ -147,14 +161,24 @@ export default function Profile({ user }: { user: User | null }) {
 				)}
 
 				<p className="mb-2">
-					<strong>Email:</strong> {userData.email}
+					<strong>Email:</strong> {user?.email}
 				</p>
 
 				<hr className="my-3" />
 
-				<div className="mb-2">
-					<strong>Name:</strong>
-				</div>
+				<p className="mb-2">
+					<strong>Name: </strong>
+					<span className="text-muted">
+						{userData.name || "No name set"}
+					</span>
+				</p>
+
+				<p className="mb-3">
+					<strong>Address: </strong>
+					<span className="text-muted">
+						{userData.address || "No address set"}
+					</span>
+				</p>
 
 				{editMode ? (
 					<div>
@@ -162,6 +186,14 @@ export default function Profile({ user }: { user: User | null }) {
 							className="form-control mb-3"
 							value={name}
 							onChange={(e) => setName(e.target.value)}
+							placeholder="Enter name"
+						/>
+
+						<input
+							className="form-control mb-3"
+							value={address}
+							onChange={(e) => setAddress(e.target.value)}
+							placeholder="Enter address"
 						/>
 
 						<div className="d-flex gap-2 flex-wrap">
@@ -174,7 +206,11 @@ export default function Profile({ user }: { user: User | null }) {
 
 							<button
 								className="btn btn-outline-secondary"
-								onClick={() => setEditMode(false)}
+								onClick={() => {
+									setEditMode(false);
+									setSuccess("");
+									setError("");
+								}}
 							>
 								Cancel
 							</button>
@@ -189,10 +225,6 @@ export default function Profile({ user }: { user: User | null }) {
 					</div>
 				) : (
 					<div>
-						<p className="mb-3 text-muted">
-							{userData.name || "No name set"}
-						</p>
-
 						<button
 							className="btn btn-primary w-100"
 							onClick={() => setEditMode(true)}

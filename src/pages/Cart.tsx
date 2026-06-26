@@ -22,11 +22,6 @@ export default function Cart() {
 	);
 
 	// = Checkout:
-	// const handleCheckout = () => {
-	// 	dispatch(clearCart());
-	// 	sessionStorage.removeItem("cart");
-	// 	setCheckoutMessage("Checkout successful! You cart has been cleared.");
-	// };
 	const handleCheckout = async () => {
 		const user = auth.currentUser;
 
@@ -76,7 +71,7 @@ export default function Cart() {
 				<h5>Total Price: ${totalPrice.toFixed(2)}</h5>
 			</div>
 
-			{/* // = CART ITEMS */}
+			{/* CART ITEMS */}
 			{cartItems.length === 0 ? (
 				<div className="text-center py-5">
 					<h5 className="mb-3">Your cart is empty 🛒</h5>

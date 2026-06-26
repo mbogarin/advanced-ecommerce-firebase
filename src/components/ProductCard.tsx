@@ -1,5 +1,4 @@
 import { useDispatch } from "react-redux";
-// import { useState } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import { addToCart } from "../store/cartSlice";
 import { Link } from "react-router-dom";
@@ -85,16 +84,6 @@ export default function ProductCard({
 				<div className="mt-auto">
 					<button
 						className="btn btn-sm btn-primary w-100 mb-2"
-						// onClick={() =>
-						// 	dispatch(
-						// 		addToCart({
-						// 			id: product.id,
-						// 			title: product.title,
-						// 			price: Number(product.price),
-						// 			image: product.image,
-						// 		}),
-						// 	)
-						// }
 						onClick={handleAddToCart}
 					>
 						Add to Cart

@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { doc, setDoc } from "firebase/firestore";
 import { auth } from "../firebase/firebaseConfig";
@@ -7,8 +8,9 @@ import { db } from "../firebase/firebaseConfig";
 export default function Register() {
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
-	const [error] = useState("");
+	const [error, setError] = useState("");
 	const [name, setName] = useState("");
+	const navigate = useNavigate();
 
 	const handleRegister = async (e: React.FormEvent) => {
 		e.preventDefault();
@@ -33,12 +35,20 @@ export default function Register() {
 				name: name,
 				createdAt: new Date().toISOString(),
 			});
-
 			console.log("FIRESTORE USER CREATED");
 
+			// Success alert:
 			alert("User registered successfully");
-		} catch (error) {
+			navigate("/login");
+
+			// Error handling:
+		} catch (err: unknown) {
 			console.error("REGISTER ERROR:", error);
+			if (err instanceof Error) {
+				setError(err.message);
+			} else {
+				alert("Registration failed. Please try again.");
+			}
 		}
 	};
 
@@ -85,7 +95,11 @@ export default function Register() {
 						Register
 					</button>
 
-					{error && <p className="text-danger mt-2">{error}</p>}
+					{error && (
+						<div className="alert alert-danger py-2 mt-3 text-center">
+							{error}
+						</div>
+					)}
 				</form>
 			</div>
 		</div>
